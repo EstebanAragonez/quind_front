@@ -1,0 +1,21 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+mat-toolbar {
+    background-color: #141e27;
+    /* Color de fondo */
+    color: white;
+    /* Color de texto por defecto */
+}
+
+mat-toolbar button {
+    color: white;
+    /* Color del texto en los botones */
+}
+
+mat-toolbar button:hover {
+    background-color: white;
+    /* Efecto hover */
+    color: black;
+}
