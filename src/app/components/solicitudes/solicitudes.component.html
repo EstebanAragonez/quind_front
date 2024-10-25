@@ -1,0 +1,97 @@
+<mat-card class="solicitud-card">
+    <mat-card-header class="header-container">
+      <mat-card-title class="solicitud-title">Buscar Solicitudes</mat-card-title>
+    
+      <!-- Botón Crear Solicitud -->
+      <button mat-raised-button color="primary" (click)="openCrearSolicitudDialog()">
+        <mat-icon>add</mat-icon> Crear Solicitud
+      </button>
+    </mat-card-header>  
+  
+    <mat-card-content>
+      <form [formGroup]="solicitudForm" (ngSubmit)="buscarSolicitudes()" class="solicitud-form">
+        <!-- Tipo de Documento -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tipo de Documento</mat-label>
+          <mat-select formControlName="tipoDocumento">
+            <mat-option *ngFor="let tipo of tiposDocumento" [value]="tipo.codigo">
+              {{ tipo.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <!-- Número de Documento -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Número de Documento</mat-label>
+          <input matInput formControlName="numeroDocumento" placeholder="Ingrese el número de documento">
+        </mat-form-field>
+  
+        <!-- Botón Buscar -->
+        <div class="button-container">
+          <button mat-raised-button color="primary" type="submit">
+            <mat-icon>search</mat-icon> Buscar
+          </button>
+        </div>
+      </form>
+  
+      <!-- Divider -->
+      <mat-divider></mat-divider>
+  
+      <!-- Resultados -->
+      <h3 class="solicitud-subtitle">Resultados</h3>
+  
+      <!-- Tabla de Resultados -->
+      <table mat-table [dataSource]="solicitudes" matSort class="mat-elevation-z8 solicitud-table">
+        <!-- Tipo de Solicitud -->
+        <ng-container matColumnDef="tipoSolicitud">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Solicitud </th>
+          <td mat-cell *matCellDef="let solicitud"> {{ getTipoSolicitudNombre(solicitud.tipoSolicitud) }} </td>
+        </ng-container>
+  
+        <!-- Nombre del Empleado -->
+        <ng-container matColumnDef="nombreEmpleado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Empleado </th>
+          <td mat-cell *matCellDef="let solicitud"> {{ solicitud.nombreEmpleado }} </td>
+        </ng-container>
+  
+        <!-- Fecha de Solicitud -->
+        <ng-container matColumnDef="fechaSolicitud">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Solicitud </th>
+          <td mat-cell *matCellDef="let solicitud"> {{ solicitud.fechaSolicitud | date }} </td>
+        </ng-container>
+  
+        <!-- Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let solicitud" [ngClass]="getEstadoClass(solicitud.estado)">
+            {{ solicitud.estado }}
+          </td>
+        </ng-container>      
+  
+        <!-- Comentarios -->
+        <ng-container matColumnDef="comentarios">
+          <th mat-header-cell *matHeaderCellDef> Comentarios </th>
+          <td mat-cell *matCellDef="let solicitud"> {{ solicitud.comentarios }} </td>
+        </ng-container>
+  
+        <!-- Botón Actualizar (nueva columna) -->
+        <ng-container matColumnDef="actualizar">
+          <th mat-header-cell *matHeaderCellDef> Actualizar </th>
+          <td mat-cell *matCellDef="let solicitud">
+            <button mat-icon-button color="accent" (click)="openActualizarDialog(solicitud)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+  
+        <!-- Encabezado de la tabla -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- Filas de la tabla -->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+      </table>
+  
+      <!-- Paginación -->
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+  

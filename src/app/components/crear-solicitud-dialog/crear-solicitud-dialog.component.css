@@ -1,0 +1,32 @@
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-form {
+    width: 100%;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px; /* Espacio entre los campos */
+    margin-bottom: 16px;
+  }
+  
+  .form-field {
+    width: 100%;
+    margin-bottom: 16px; /* Espaciar verticalmente */
+  }
+  
+  /* Campo de Comentarios más grande */
+  .large-textarea textarea {
+    height: auto;
+    min-height: 100px; /* Ajusta la altura mínima */
+    max-height: 200px; /* Altura máxima opcional */
+    resize: vertical; /* Permitir que el usuario ajuste el tamaño vertical si lo desea */
+  }
+  

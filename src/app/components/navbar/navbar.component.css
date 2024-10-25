@@ -1,0 +1,17 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+mat-toolbar {
+    background-color: #141e27;
+    color: white;
+}
+
+mat-toolbar button {
+    color: white;
+}
+
+mat-toolbar button:hover {
+    background-color: white;
+    color: black;
+}
