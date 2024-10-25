@@ -8,16 +8,11 @@ import { Observable } from 'rxjs';
 export class CrearSolicitudService {
   
   private apiUrlSolicitud = 'http://localhost:8080/api/tipo/solicitud';
-  private apiUrlDocumento = 'http://localhost:8080/api/documento';
 
   constructor(private http: HttpClient) {}
 
   getTiposSolicitud(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrlSolicitud);
-  }
-
-  getTiposDocumento(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrlDocumento);
   }
 
   crearSolicitud(solicitud: any): Observable<any> {
