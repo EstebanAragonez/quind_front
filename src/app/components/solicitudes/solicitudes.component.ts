@@ -202,11 +202,22 @@ export class SolicitudesComponent implements OnInit {
       if (result) {
         this.crearSolicitudService.crearSolicitud(result).subscribe(
           response => {
-            alert('Solicitud creada exitosamente');
+            Swal.fire({
+              title: 'Solicitud creada',
+              text: 'La solicitud se ha creado exitosamente.',
+              icon: 'success',
+              confirmButtonText: 'Aceptar'
+            });
           },
           error => {
-            console.error('Error al crear la solicitud:', error);
-            alert('Error al crear la solicitud');
+            const errorMessage = (typeof error.error === 'string') ? error.error : 'Hubo un problema al crear la solicitud. Por favor, intenta nuevamente.';
+        
+            Swal.fire({
+              title: 'Error',
+              text: errorMessage,
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
           }
         );
       }
