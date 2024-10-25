@@ -1,1 +1,27 @@
 <p>actualizar-solicitud-dialog works!</p>
+<mat-dialog-content class="dialog-content">
+    <form [formGroup]="solicitudForm" class="modal-form">
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nuevo Estado</mat-label>
+            <mat-select formControlName="estado">
+              <mat-option value="NUEVA">NUEVA</mat-option>
+              <mat-option value="EN_PROCESO">EN PROCESO</mat-option>
+              <mat-option value="APROBADA">APROBADA</mat-option>
+              <mat-option value="DENEGADA">DENEGADA</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Comentarios</mat-label>
+        <textarea matInput formControlName="comentarios" placeholder="Escriba comentarios"></textarea>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="solicitudForm.value" [disabled]="!solicitudForm.valid">
+      Actualizar
+    </button>
+  </mat-dialog-actions>
+  

@@ -19,7 +19,13 @@ import { ActualizarSolicitudDialogComponent } from '../actualizar-solicitud-dial
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { CrearSolicitudDialogComponent } from '../crear-solicitud-dialog/crear-solicitud-dialog.component';
-import { CrearSolicitudService } from '../../service/crear-solicitud.service'
+import { CrearSolicitudService } from '../../service/crear-solicitud.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { ViewChild } from '@angular/core';
+import Swal from 'sweetalert2';
+
+
+
 
 
 @Component({
@@ -40,7 +46,9 @@ import { CrearSolicitudService } from '../../service/crear-solicitud.service'
     MatDialogModule,
     MatPaginatorModule,
     MatSortModule,
-    CrearSolicitudDialogComponent
+    CrearSolicitudDialogComponent,
+    MatPaginator
+
   ],
   templateUrl: '../solicitudes/solicitudes.component.html',
   styleUrls: ['../solicitudes/solicitudes.component.css']
@@ -54,13 +62,13 @@ export class SolicitudesComponent implements OnInit {
   getEstadoClass(estado: string): string {
     switch (estado) {
       case 'NUEVA':
-        return 'estado-nueva';    // Azul
+        return 'estado-nueva';
       case 'EN_PROCESO':
-        return 'estado-en-proceso'; // Amarillo
+        return 'estado-en-proceso';
       case 'APROBADA':
-        return 'estado-aprobada';   // Verde
+        return 'estado-aprobada';
       case 'DENEGADA':
-        return 'estado-denegada';   // Rojo
+        return 'estado-denegada';
       default:
         return '';
     }
@@ -68,13 +76,14 @@ export class SolicitudesComponent implements OnInit {
 
   errorMessage: string = '';
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private fb: FormBuilder, 
     private solicitudesService: SolicitudesService,
     private actualizarSolicitudService: ActualizarSolicitudService,
     private crearSolicitudService: CrearSolicitudService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
 
@@ -85,19 +94,22 @@ export class SolicitudesComponent implements OnInit {
     });
     this.cargarTiposDocumento();
   }
+
+  ngAfterViewInit() {
+    this.solicitudes.paginator = this.paginator;
+  }
   
   cargarTiposDocumento(): void {
     this.solicitudesService.getTiposDocumento().subscribe(
       (data: any[]) => {
-        console.log('Respuesta del backend:', data);  // Verifica la estructura de la respuesta
-  
-        // Mapea correctamente los tipos de documentos
+        console.log('Respuesta del backend:', data);  
+
         this.tiposDocumento = data.map(tipo => ({
-          nombre: this.getDocumentoNombre(tipo.nombre),  // Mostrar nombre legible
-          codigo: tipo.nombre  // Usar el código real para enviar en la búsqueda
+          nombre: this.getDocumentoNombre(tipo.nombre), 
+          codigo: tipo.nombre  
         }));
   
-        console.log(this.tiposDocumento);  // Verifica el resultado final
+        console.log(this.tiposDocumento); 
       },
       error => {
         this.errorMessage = 'Error al cargar los tipos de documento';
@@ -150,10 +162,20 @@ export class SolicitudesComponent implements OnInit {
           .subscribe(() => {
             solicitud.estado = result.estado;
             solicitud.comentarios = result.comentarios;
-            alert('Solicitud actualizada exitosamente');
+            Swal.fire({
+              title: 'Solicitud actualizada exitosamente',
+              icon: 'success',
+              confirmButtonText: 'Aceptar'
+            });
           }, error => {
             console.error('Error al actualizar la solicitud:', error);
-            alert('Error al actualizar la solicitud');
+            Swal.fire({
+              title: 'Error al actualizar la solicitud',
+              text: 'No se puede reactivar una solicitud Denegada,  por favor cree una nueva solicitud',
+              icon: 'error',
+              confirmButtonText: 'Cerrar',
+              timer: 5000
+            });
           });
       }
     });
@@ -178,11 +200,9 @@ export class SolicitudesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Llama al servicio para crear la solicitud con los datos del modal
         this.crearSolicitudService.crearSolicitud(result).subscribe(
           response => {
             alert('Solicitud creada exitosamente');
-            // Recargar las solicitudes si es necesario
           },
           error => {
             console.error('Error al crear la solicitud:', error);

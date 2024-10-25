@@ -18,6 +18,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 import { routes } from '../app/app.routes';
@@ -45,6 +46,7 @@ export const appConfig: ApplicationConfig = {
       RouterModule,
       MatCardModule,
       MatDividerModule,
+      MatSnackBarModule
     )
   ]
 };

@@ -1,0 +1,16 @@
+/* Estilos para snackbar de éxito */
+.snackbar-success {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    font-size: 18px;  /* Tamaño del texto más grande */
+    text-align: center;
+  }
+  
+  /* Estilos para snackbar de error */
+  .snackbar-error {
+    background-color: #f44336; /* Rojo */
+    color: white;
+    font-size: 18px;  /* Tamaño del texto más grande */
+    text-align: center;
+  }
+  
