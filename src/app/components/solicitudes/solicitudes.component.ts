@@ -141,7 +141,13 @@ export class SolicitudesComponent implements OnInit {
         this.solicitudes.data = data;
       },
       error => {
-        this.errorMessage = 'Error al buscar las solicitudes. Inténtelo de nuevo.';
+        const errorMessage = (typeof error.error === 'string') ? error.error : 'Hubo un problema al crear la solicitud. Por favor, intenta nuevamente.';
+        Swal.fire({
+          title: 'Error',
+          text: errorMessage,
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
       }
     );
   }
